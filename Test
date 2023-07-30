@@ -1,0 +1,262 @@
+Q1. What are the differences between cookie, local storage and session storage?
+
+Cookies 
+A cookie is a small piece of data that is sent from a website to a user's browser and saved on their computer.
+
+•	Data transfer to the server is exist.
+•	Both clients and servers can read and write the cookies.
+•	The storage capacity of Cookies is 4KB.
+•	Cookies expire based on the setting and working per tab and window.
+Local Storage
+Local storage is another way to store data on the client-side. 
+Unlike cookies, local storage has a much larger storage limit (usually around 5-10MB) and is not sent to the server with every request.
+Local storage data is stored locally on the user's browser and can be accessed even after the user closes their browser.
+
+Session storage
+Session storage is similar to local storage, but with one key difference: session storage data is cleared when the user closes their browser.
+•	data is never transferred to the server
+•	can only be read on client-side
+•	storage limit is about 5-10MB
+•	opening multiple tabs/windows with the same URL creates session storage for each tab/window
+
+----------------------------------------------------------------------------------------------------------------------
+Q2. Explain the output of the above-given code and explain why?
+for (var i = 0; i < 5; i++) {
+  setTimeout(() => console.log(i), 100)
+}
+Output
+5
+5
+5
+5
+5
+The above Output is based on the scope of var keyword
+The output of the given code will be 5 printed 5 times, with a delay of 100 milliseconds between each print.
+This is because the set Timeout function creates a function that references the (i) variable from the outer scope
+
+
+----------------------------------------------------------------------------------------------------------------------
+Q3. What is Sharding in MongoDB, and how does it work?
+Solution: 
+Sharding is a method for distributing data across multiple machines.
+MongoDB uses sharding to support deployments with very large data sets and high throughput operations. 
+As the size of the data increases, a single machine may not be sufficient to store the data nor provide an acceptable read and write throughput.
+Sharding solves the problem with horizontal scaling.
+In MongoDB, a sharded cluster consists of shards, mongos, and config servers. 
+A shard is a replica set that contains a subset of the cluster’s data.
+The mongos acts as a query router for client applications, handling both read and write operations. 
+It dispatches client requests to the relevant shards and aggregates the result from shards into a consistent client response. 
+Clients connect to a mongos, not to individual shards. Config servers are the authoritative source of sharding metadata.
+MongoDB shards at the collection level. One may choose which collection(s) they want to shard. 
+MongoDB uses the shard key to distribute a collection’s documents across shards. 
+MongoDB splits the data into “chunks”, by dividing the span of shard key values into non-overlapping ranges. 
+MongoDB then attempts to distribute those chunks evenly among the shards in the cluster.
+
+
+----------------------------------------------------------------------------------------------------------------------
+Q4. What is promise chaining? Explain with an example.
+
+Solution: 
+
+Promise chaining is a way to perform multiple asynchronous operations in sequence, where each operation depends on the result of the previous one.
+fetch('https://api.example.com/data')
+  .then(response => response.json())
+  .then(data => processData(data))
+  .then(result => displayResult(result))
+  .catch(error => console.error(error));
+
+
+----------------------------------------------------------------------------------------------------------------------
+Q5. What are Higher-Order Components (HOC) in React and how do they work?
+
+Solution: 
+
+A Higher-Order Component (HOC) is an advanced technique in React for reusing component logic. 
+It is a function that takes a component and returns a new component.
+HOCs are not part of the React API. They are a pattern that emerges from React’s compositional nature.
+The idea behind HOCs is to take a component and add some additional behavior or functionality to it, without modifying the original component. 
+This allows you to reuse the same behavior or functionality across multiple components.
+
+// This is our original component
+function MyComponent(props) {
+  return <div>{props.data}</div>;
+}
+
+// This is our HOC
+function withData(WrappedComponent) {
+  return class extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { data: null };
+    }
+
+    componentDidMount() {
+      // Fetch some data here and update the state
+      this.setState({ data: "Some data" });
+    }
+
+    render() {
+      // Pass the data as a prop to the wrapped component
+      return <WrappedComponent data={this.state.data} {...this.props} />;
+    }
+  };
+}
+
+
+----------------------------------------------------------------------------------------------------------------------
+Q6. What is callback hell? Explain different ways to solve callback hell with examples each.
+
+Solution:
+
+Callback hell refers to a situation where multiple nested callbacks make the code difficult to read and maintain.
+It occurs when you have lots of callback functions in your code, and it gets particularly bad when you need to do loops, try-catch blocks, and things like that.
+There are several ways to solve callback hell:
+1.	Write comments
+2.	Split functions into smaller functions 
+3.	Using Promises
+4.	Using Async/await
+const get = (url) => new Promise();
+get(`/users?username=asadanik`)
+.then((user) => {
+    return get(`/posts?user_id=${user.id}`);
+})
+.then((posts) => {
+    const latestPost = posts;
+    return get(`/comments?post_id=${latestPost.id}`);
+})
+.then((comments) => {
+    const latestComment = comments;
+    return get(`/users?username=${latestComment.username}`);
+})
+.then((user) => {
+    console.log('Latest Comments user is -- ', user);
+})
+.catch(err => {
+    console.log('ERR! of -- ', err);
+});
+
+
+----------------------------------------------------------------------------------------------------------------------
+Q7. Use Array.reduce() method to reverse the following given array
+    const arr = [1, 2, 3, 4, 5]
+
+Solution: 
+const arr = [1, 2, 3, 4, 5];
+
+const reversedArr = arr.reduce((accumulator, currentValue) => {
+  accumulator.unshift(currentValue);
+  return accumulator;
+}, []);
+
+console.log(reversedArr); // [5, 4, 3, 2, 1]
+
+
+----------------------------------------------------------------------------------------------------------------------
+Q8. In what order will the numbers 1-4 be logged to the console when the code below is executed? Why?
+(function() {
+    console.log(1); 
+    setTimeout(function(){console.log(2)}, 1000); 
+    setTimeout(function(){console.log(3)}, 0); 
+    console.log(4);
+})();
+
+Solution: 1 4 3 2
+1.	The first console.log(1) is executed immediately, logging 1 to the console.
+2.	The second console.log(4) is executed immediately, logging 4 to the console.
+3.	After that, the second setTimeout function is executed, logging 3 to the console.
+4.	After last, the first setTimeout function is executed, logging 2 to the console.
+
+
+----------------------------------------------------------------------------------------------------------------------
+Q9. What will the code below output to the console and why?
+var arr1 = "john".split(''); 
+var arr2 = arr1.reverse();
+var arr3 = "jones".split('');
+arr2.push(arr3);
+console.log("array 1: length=" + arr1.length + " last=" + arr1.slice(-1));
+console.log("array 2: length=" + arr2.length + " last=" + arr2.slice(-1));
+
+Solution: array 1: length = 5 last = j,o,n,e,s
+array 2: length = 5 last = j,o,n,e,s
+
+Solution: 
+The code will output the following to the console:
+array 1: length = 5 last= j,o,n,e,s
+array 2: length = 5 last= j,o,n,e,s
+1.	['j', 'o', 'h', 'n'].
+2.	['n', 'h', 'o', 'j'].
+3.	The third line of code creates a new array arr3 by splitting the string "jones" into an array of characters: ['j', 'o', 'n', 'e', 's'].
+4.	The fourth line of code calls the push() method on arr2 to append the entire arr3 array to the end of it. Since arr1 and arr2 point to the same array, this also modifies arr1. So, after this line of code is executed, both arr1 and arr2 are arrays with 5 elements: ['n', 'h', 'o', 'j', ['j', 'o', 'n', 'e', 's']].
+5.	The fifth line of code logs a string to the console that includes the length of arr1 (which is 5) and its last element (which is the entire arr3 array: ['j', 'o', 'n', 'e', 's']). So, it logs: "array 1: length=5 last=j,o,n,e,s".
+6.	The sixth line of code logs a string to the console that includes the length of arr2 (which is also 5) and its last element (which is also the entire arr3 array: ['j', 'o', 'n', 'e', 's']). So, it logs: "array 2: length=5 last=j,o,n,e,s".
+
+----------------------------------------------------------------------------------------------------------------------
+Q10. 
+What will the following code's output be in sequence and explain why?
+function printNumber(num) {
+  console.log(num);
+}
+
+console.log(1);
+
+setTimeout(printNumber, 0, 2);
+
+setTimeout(printNumber, 100, 3);
+
+console.log(4);
+
+Solution: 1 4 2 3
+1.	The first console.log(1) is executed immediately, logging 1 to the console.
+2.	The first setTimeout function is called with a delay of 0 milliseconds, but it still gets placed on the event queue and will be executed after the current execution context is finished. So it will log 2 to the console after all the code in the current execution context has finished running.
+3.	The second setTimeout function is called with a delay of 100 milliseconds, so it will log 3 to the console after 100 milliseconds.
+4.	The second console.log(4) is executed immediately, logging 4 to the console.
+5.	After all the code in the current execution context has finished running, the first setTimeout function is executed, logging 2 to the console.
+6.	After 100 milliseconds, the second setTimeout function is executed, logging 3 to the console.
+
+
+----------------------------------------------------------------------------------------------------------------------
+Q11.  Check the below given code, if there are any issues, fix them and explain the output
+const numbers = [1, 2, 3, 4, 5];
+const result = numbers.reduce((acc, num) => {
+  if (num % 2 === 0) {
+    acc.evens.push(num);
+  } else {
+    acc.odds.push(num);
+  }
+  return acc;
+});
+
+console.log(result);
+
+Solution: 
+The given code has an issue: the reduce() method is missing its second argument, which is the initial value of the accumulator. Without this argument, the reduce() method will throw a Type Error because it tries to access the properties evens and odds of an undefined value.
+const numbers = [1, 2, 3, 4, 5];
+
+const result = numbers.reduce(
+  (acc, num) => {
+    if (num % 2 === 0) {
+      acc.evens.push(num);
+    } else {
+      acc.odds.push(num);
+    }
+    return acc;
+  },
+  { evens: [], odds: [] }
+);
+
+console.log(result);
+
+
+1.	The reduce() method iterates over the elements of the numbers array. For each element, it calls the callback function with two arguments: the current value of the accumulator (acc) and the current element (num).
+2.	The initial value of the accumulator is an object with two properties: evens and odds, both initialized to empty arrays.
+3.	For each element in the numbers array, the callback function checks if it is even or odd by using the modulo operator (%). If it is even, it pushes it to the evens array of the accumulator object. If it is odd, it pushes it to the odds array of the accumulator object.
+4.	After all elements have been processed, the final value of the accumulator object is returned by the reduce() method and assigned to the variable result.
+5.	The final value of result is an object with two properties: evens and odds. The evens property is an array containing all even numbers from the original array ([2, 4]). The odds property is an array containing all odd numbers from the original array ([1, 3, 5]).
+
+
+
+
+
+
+
+
